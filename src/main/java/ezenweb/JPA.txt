@@ -1,0 +1,60 @@
+1.jpa 설치
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+2.mysql설치
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+필수 연동 설정
+application.properties 파일 에서 연동 코드를 읽어서 실행 한다.
+# 1. 해당 JDBC 클래스를 호출한다.
+spring.datasource.driverClassName=JDBC클래스명(MYSQL,오라클 등등)
+# 2. 해당 JDBC 클래스를 이용한 접속할 DB 서버 경로 설정
+spring.datasource.url = 연동할 DB URL
+# 3. DB서버의 아이디와 비밀번호
+spring.datasource.username=DB서버 계정
+spring.datasource.password=DB서버 비밀번호
+
+# 4. DDL(create, drop, alter 등등) DML (select , insert, delete, update)
+spring.jpa.hibernate.ddl-auto = create
+    -테이블 존재하면 테이블 지우고 새로운 테이블 생성
+spring.jpa.hibernate.ddl-auto = update
+    -기존 테이터를 유지하고 변화가 있는 필드에 대해서 업데이트
+
+- JPA : java persistence Api  ---> 왜만들어졌어??? SQL 쓰기 싫어서!!
+
+    - persistence ( 영속성 : 프로그램이 종료되어도 사라지지 않는 데이터의 특성 )
+    - 역할 :
+        -Dao란??? DB연동 / 조작 / 결과 를 다루는 자바 객체
+
+        -JPA
+    - 핵심도구
+        1. 엔티티      : 자바 객체를 DB가 이해할수 있게 만든 것으로 이를 기반으로 테이블이 생성된다.
+            엔티티(개체) <-------> 하나의 생물체(테이블)
+            엔티티 클래스 <------> DB 테이블
+            엔티티 하나의 객체 <--------> 테이블의 하나의 행 레코드
+
+        2. 리파지터리   : 엔티티가 DB 속 테이블에 저장 및 관리 할 수 있게 하는 인터페이스
+            (인터페이스 :  서로 다른 객체들 간의 동일한 기능을 수행하게끔 조작하는 기능 묶음)
+
+- 엔티티 만드는 방법
+1. 일반 클래스 처럼 파일 생성한다.
+2. 클래스위에 @Entity
+3. Pk 필드는 필수 1개 이상 선정 @Id
+    1. 엔티티 클래스에 PK 가 없으면 오류 발생 : has no identifier
+
+- 리파지터리 만드는 방법
+    1. 일반 인터페이스 처럼 인터페이스 파일 생성
+    2. extends JpaRepository 상속받기
+
+        extends JpaREpository<조작할엔티티클래스명, >
+
+
+리파지터리 객체 이용한 엔티티 조작
+
+    1.[C] .save(저장할엔티티)
+
+    2.[R] .findAll()
+
+    3.[U] X
+
+    4.[D] .delete(삭제할엔티티) 또는 .deleteById(삭제할아이디)
+
