@@ -13,11 +13,21 @@ spring.datasource.url = 연동할 DB URL
 spring.datasource.username=DB서버 계정
 spring.datasource.password=DB서버 비밀번호
 
+
+
 # 4. DDL(create, drop, alter 등등) DML (select , insert, delete, update)
 spring.jpa.hibernate.ddl-auto = create
     -테이블 존재하면 테이블 지우고 새로운 테이블 생성
 spring.jpa.hibernate.ddl-auto = update
     -기존 테이터를 유지하고 변화가 있는 필드에 대해서 업데이트
+
+# 5. JPA 가 SQL 실행한 결과 보고 있을 때 CONSOLE 에 실행 된 SQL 표시 하는방법
+spring.jpa.properties.hibernate.show_sql=true
+# 6. CONSOLE 에 실행된 SQL 작성시 엔터 처리 하는방법
+spring.jpa.properties.hibernate.format_sql=true
+
+
+
 
 - JPA : java persistence Api  ---> 왜만들어졌어??? SQL 쓰기 싫어서!!
 
@@ -58,3 +68,42 @@ spring.jpa.hibernate.ddl-auto = update
 
     4.[D] .delete(삭제할엔티티) 또는 .deleteById(삭제할아이디)
 
+
+========================================================================
+JPA 관련 어노테이션
+    1. @Entity : 해당 클래스를 엔티티로 사용 명시
+        - ORM : 객체와 데이터베이스 개체와 연동/매핑/연결 해주는 기법
+        - 자바 클래스와 데이터베이스의 테이블과 연동
+
+    2. @Id     : primary key 명시
+        - JPA 사용시 1개 이상 무조건 필수!!
+
+    3. @Table(name = "테이블명")    : 해당 엔티티 테이블의 이름
+        - 생략시 해당 클래스명으로 테이블명 생성
+
+    4. @GerneratedValue(strategy = GenerationType.IDENTITY) : auto_increment
+
+    5. @Column : 필드
+        @Column(name = "필드명"):
+            - 생략시 자바 필드명으로 생성
+        @Column(length = 허용범위자료형크기)
+            - 생략시 최대 허용범위
+        @Column(nullable = T/F)
+            - 생략시 true
+                false : not null
+        @Column(unique = T/F)
+            - 생략시 false
+                true = unique
+        @Column(columnDefinition ="DB자료형 타입")
+
+
+    6. 자료형
+        자바                    mysql db
+        int                     int
+        boolean                 bit(0,1)
+        byte                    tinyint
+        short                   smallint
+        char                    char(1)
+        float                   float (자리)
+        double                  double (자리)
+        long                    bigint

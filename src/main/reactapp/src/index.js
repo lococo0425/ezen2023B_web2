@@ -14,7 +14,9 @@ import Library from './chapter3/Library';
 import Clock from './chapter3/Clock';
 // chapter5 실습
 import CommentList from './chapter5/CommentList';
-
+// chapter7 실습
+import Counter from './chapter7/Counter';
+import UseStateList from './chapter7/UseStateList';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // root.render( // 여기가 랜더링 되는 곳 입니다.!!!!!!!!!!!!!
 //   <React.StrictMode>
@@ -23,6 +25,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 //     {/* <App/> */}
 //     {/* <Library/> */}
 //     <Clock/>
+//     {/* <CommentList/> */}
+//      <Counter/>
 //   </React.StrictMode>
 // );
 // setInterval(()=>{
@@ -31,7 +35,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <CommentList/>
+    <UseStateList/>
   </React.StrictMode>
 )
 
