@@ -8,30 +8,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-@RestController //@Controller + @ResponseBody : 해당 컨트롤러가 데이터를 주고 받는 역할
+@RestController // @Controller + @ResponseBody( Content-Type:application/json )  : 데이터 주고 받는 REST 역할
 @RequestMapping("/board")
 public class BoardController {
-    @Autowired
-    private BoardService boardService;
+    @Autowired private BoardService boardService;
     @PostMapping("/post.do")
-    public List<Object> postBoard(){
-
-        return boardService.postBoard();
-    }
+    public boolean postBoard(){  return boardService.postBoard(); }
     @GetMapping("/get.do")
-    public boolean getBoard(){
-
+    public List<Object> getBoard(){
         return boardService.getBoard();
     }
     @PutMapping("/put.do")
     public boolean putBoard(){
-
         return boardService.putBoard();
     }
     @DeleteMapping("/delete.do")
     public boolean deleteBoard(){
-
         return boardService.deleteBoard();
     }
+
 }

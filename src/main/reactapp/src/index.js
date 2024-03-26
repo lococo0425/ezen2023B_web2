@@ -17,7 +17,16 @@ import CommentList from './chapter5/CommentList';
 // chapter7 실습
 import Counter from './chapter7/Counter';
 import UseStateList from './chapter7/UseStateList';
+// chapter 11 실습
+
+
+import SignUp from './component/member/SignUp';
+
+
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+ 
 // root.render( // 여기가 랜더링 되는 곳 입니다.!!!!!!!!!!!!!
 //   <React.StrictMode>
 //     {/* <JSX선언 /> */}
@@ -35,7 +44,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <UseStateList/>
+    {/* <UseStateList/> */}
+    <SignUp/>
   </React.StrictMode>
 )
 
