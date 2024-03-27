@@ -1,0 +1,6 @@
+AXIOS
+    정의 : HTTP 비동기 통신을 지원하는 (node.js)라이브러리 함수 
+    모듈 설치 : 터미널에서 npm i axios 
+            - 프로젝트내 한번 설치 
+            - npm 에 설치된 라이브러리 들은 package.json에 들어감.
+            
