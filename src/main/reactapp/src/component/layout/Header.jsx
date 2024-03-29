@@ -15,13 +15,16 @@ export default function Header(porps){
         })
         .catch(e=>{console.log(e)})
     } , [] ); 
+
+
     return(<>
         <div>
-            {loginInfo&&<span>{loginInfo.memail}님 안녕하세요.</span>}
+            {loginInfo&&<span>{loginInfo.memail}님 안녕하세요. <Link to="/member/logout">로그아웃</Link> </span>}
             <ul>
                 <li><Link to="/">홈</Link></li>
                 <li><Link to="/member/signup">회원가입</Link></li>
                 <li><Link to="/member/login">로그인</Link></li>
+
             </ul>
         </div>
     </>)

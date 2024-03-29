@@ -25,8 +25,13 @@ import UseStateList from './chapter7/UseStateList';
 
 import SignUp from './component/member/SignUp';
 
+
+// chapter 13 실습
+import ProfileCard from './chapter13/ProfileCard';
 //web2 라우터 컴포넌트
 import Index from './component/Index';
+
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -53,6 +58,7 @@ root.render(
     {/* <Axios컴포넌트/> */}
     {/* <Route컴포넌트/> */}
     <Index/>
+    <ProfileCard/>
   </React.StrictMode>
 )
 

@@ -55,7 +55,7 @@ spring.jpa.properties.hibernate.format_sql=true
     1. 일반 인터페이스 처럼 인터페이스 파일 생성
     2. extends JpaRepository 상속받기
 
-        extends JpaREpository<조작할엔티티클래스명, >
+        extends JpaREpository<조작할엔티티클래스명, PK필드의자료형>
 
 
 리파지터리 객체 이용한 엔티티 조작
@@ -94,7 +94,7 @@ JPA 관련 어노테이션
         @Column(unique = T/F)
             - 생략시 false
                 true = unique
-        @Column(columnDefinition ="DB자료형 타입")
+        @Column(columnDefinition ="DB자료형 타입")5
 
 
     6. 자료형
