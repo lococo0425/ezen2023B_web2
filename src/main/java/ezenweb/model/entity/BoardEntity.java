@@ -1,17 +1,18 @@
 package ezenweb.model.entity;
 
-import ezenweb.model.dto.BaseTimeDto;
 import ezenweb.model.dto.BoardDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "board")
@@ -35,23 +36,38 @@ public class BoardEntity extends BaseTime {
     private MemberEntity memberEntity;
 
     // 양방향 : 게시물fk
-    @OneToMany( mappedBy = "boardEntity")
+    @OneToMany( mappedBy = "boardEntity" , cascade = CascadeType.ALL)
     @ToString.Exclude
     @Builder.Default
     private List<ReplyEntity> replyEntityList = new ArrayList<>();
 
-    public BoardDto toDto(){
-        return BoardDto.builder()
-                .bno(this.bno)
-                .bcontent(this.bcontent)
-                .bview(this.bview)
-                .mno_fk(memberEntity.getMno())
-                .memail(memberEntity.getMemail())
-                .cdate(this.getCdate())
-                .udate(this.getUdate())
-                .build();
+    // 양방향 설정
+    @OneToMany( mappedBy =  "boardEntity" , cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @Builder.Default
+    private List<BoardImgEntity> boardImgEntityList = new ArrayList<>();
 
+    // - 게시물 출력
+    public BoardDto toDto(){
+        return  BoardDto.builder()
+                .bno( this.bno )
+                .bcontent( this.bcontent )
+                .bview( this.bview )
+                .mno_fk( memberEntity.getMno() )
+                .memail( memberEntity.getMemail() )
+                .cdate( this.getCdate() )
+                .udate( this.getUdate() )
+                .bimgList(
+                        this.boardImgEntityList.stream().map(
+                                ( imgEntity )->{ return imgEntity.getBimg(); }
+                        ).collect( Collectors.toList() )
+                )
+                // bimgList( List<String> )
+                // [ "oo.jpg" , "oo.jpg" , "oo.jpg" , "oo.jpg" , "oo.jpg"  ]
+                // .uploadList( ) // 등록용
+                .build();
     }
+
 }
 /*
     create table BoardEntitiy(

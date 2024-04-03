@@ -15,6 +15,7 @@ insert
     ('게시물내용 4',4),
     ('게시물내용 5',5),
     ('게시물내용 6',1);
+
 /* 댓글 샘플 데이터 */
 insert
     into reply(rcontent, bno_fk, mno_fk)
@@ -24,3 +25,13 @@ insert
     ('댓글4',2,1),
     ('댓글5',3,4),
     ('댓글5',1,5);
+
+/* 3. 게시물사진 샘플 데이터 */
+insert
+    into boardimg( bimg , bno_fk )
+    values( '1.jpg' , 1 ),
+    ( '2.jpg' ,  2 ),
+    ( '3.jpg' ,  3 ),
+    ( '4.jpg' ,  4 ),
+    ( '5.jpg' ,  5 ),
+    ( '6.jpg' ,  6 );
