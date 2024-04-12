@@ -19,16 +19,17 @@ public class MemberController {
         return memberService.doSignupPost( memberDto );
     }
 
-    @PostMapping("/login/post.do") // 2. 로그인
-    public boolean doLoginPost( MemberDto memberDto ){
-        return memberService.doLoginPost( memberDto );
-    }
-
-    @GetMapping("/logout/get.do") // 3. 로그아웃
-    public boolean doLogOutGet( ){
-        return memberService.doLogOutGet();
-    }
-
+//  ====================  시큐리티 사용을 위해 제거======================
+//    @PostMapping("/login/post.do") // 2. 로그인
+//    public boolean doLoginPost( MemberDto memberDto ){
+//        return memberService.doLoginPost( memberDto );
+//    }
+//
+//    @GetMapping("/logout/get.do") // 3. 로그아웃
+//    public boolean doLogOutGet( ){
+//        return memberService.doLogOutGet();
+//    }
+// ==================================================================
     @GetMapping("/login/info/get.do") // 4. 내정보
     public MemberDto doLoginInfo( ){
         return memberService.doLoginInfo();

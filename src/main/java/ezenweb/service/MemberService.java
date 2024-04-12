@@ -7,6 +7,17 @@ import ezenweb.model.entity.MemberEntity;
 import ezenweb.model.repository.MemberEntityRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Member;
@@ -16,11 +27,42 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        return null;
+    }
+
+    //-(시큐리티) 로그인 커스텀
+    @Override
+    public UserDetails loadUserByUsername(String memail) throws UsernameNotFoundException {
+        // 1. 로그인 창에서 입력받은 아이디
+        System.out.println("username = " + memail);
+        // 2. 입력받은 아이디로 실제 아이디와 실제 (암호화된)패스워드
+            // 2-1 memail 이용한 회원엔티티 찾기
+        MemberEntity memberEntity = memberEntityRepository.findByMemail(memail);
+        // 만약에 해당 입력한 이메일의 엔티티가 없으면
+        if(memberEntity == null){return null;} //userDetail 이 없다...
+
+        //- ROLE 부여
+        List<GrantedAuthority> 등급목록 = new ArrayList<>();
+        등급목록.add(new SimpleGrantedAuthority("ROLE_"+memberEntity.getMrol())); // ROLE_등급명
+
+
+        // 3. UserDetails 반환[ 1.아이디 2.패스워드 ]
+            //UserDetails 목적 : Token에 입력받은 아이디/패스워드 검정하기 위한 실제 정보 반환
+        UserDetails userDetails = User.builder()
+                .username(memberEntity.getMemail())     //실제 아이디
+                .password(memberEntity.getMpassword())  //실제 비밀번호
+                .authorities(등급목록)    //ROLE 등급
+                .build();
+
+        return userDetails;
+    }
 
     @Autowired MemberEntityRepository memberEntityRepository;
 
-    // 1. 회원가입
+    // 1. 회원가입 ( 시큐리티 사용시 패스워드 암호화 필수!!)
     public int doSignupPost(  MemberDto memberDto){ System.out.println("memberDto = " + memberDto);
         doCheck(memberDto.getMemail());
         if(doCheck(memberDto.getMemail())){
@@ -61,11 +103,31 @@ public class MemberService {
     }
     // 4. 현재 로그인된 회원정보 호출 ( 세션 값 반환/호출 )
     public MemberDto doLoginInfo(){
-        Object object = request.getSession().getAttribute("loginInfo");
-        if( object != null ){
-            return (MemberDto)object; // 강제형변환
+        //(시큐리티 사용하기 전)
+//        Object object = request.getSession().getAttribute("loginInfo");
+//        if( object != null ){
+//            return (MemberDto)object; // 강제형변환
+//        }
+//        return null;
+        //(시큐리티 사용 했을때) Principal : 본인/주역/주체자 : 브라우저마다 1개
+        Object object = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(object);
+        // 로그인 상태가 아니면
+        if(object.equals("anonymousUser")){
+            return null;
         }
-        return null;
+        // 로그인 상태이면 UserDetails 타입 변환
+        UserDetails userDetails = (UserDetails) object;
+        // 회원정보(비밀번호 제외 권장)
+        MemberEntity memberEntity = memberEntityRepository.findByMemail(userDetails.getUsername());
+
+
+        return MemberDto.builder()
+                .memail(memberEntity.getMemail())
+                .mname(memberEntity.getMname())
+                .mno(memberEntity.getMno())
+                .build();
+
     }
 
     public boolean getFindMeail(String memail){
